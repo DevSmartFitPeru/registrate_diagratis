@@ -1,4 +1,7 @@
 <?php
+// Desactivar toda notificación de error
+error_reporting(0);
+
 include "funciones.php";
 include "api.php";
 include "mail.php";
@@ -26,12 +29,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $array_count = mysqli_fetch_all($query, MYSQLI_ASSOC);
             $user_count = intval($array_count[0]["COUNT(*)"]); // número de usuarios con el dni registrados en la base de datos
 
+
             if ($user_count > 0){
                 $canjeado = "Este usuario ya tiene un cupón canjeado.";
             }else {
                 // // insertar alumno en la base de datos
                 $query_alumno = "insert into alumnos(tipo_documento, nro_documento, nombres_completos, email, fecha_creacion) values('$document_type','$nro_documento', '$nombres', '$email', '$date_today')";
                 mysqli_query($conexion, $query_alumno);
+
+
 
                // // hacer update del cambio de status para el cupón
                //  obtener el primer cupón dispionible para hacer el update
@@ -68,12 +74,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <?php
         if($canjeado != null){
             ?> <style>.error{display: block}</style><?php
         }
     ?>
 </head>
+
+<?php 
+$error=sha1(md5("Error"));
+                        if (isset($_GET['error']) && $_GET['error']==$error) {
+                            echo "<script> Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Esta promoción aplica solo para Clientes SmartFit'
+                              });</script>";
+}
+?>
 
 <body>
     <div class="container" id="registration-form">
@@ -110,11 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="form-group">
                     <p class=""> <?php 
                     echo "
-                    <script> Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Este usuario ya tiene un cupón canjeado.'
-                      });</script>";
+                    ";
                     ?>
                     </p>
                 </div>

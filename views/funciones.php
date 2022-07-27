@@ -1,7 +1,7 @@
 <?php
 	function abrirConexion() {
-		$usuario = "cupon";
-		$contrasena = "Sistemas2021$";
+		$usuario = "root";
+		$contrasena = "";
 		$servidor = "localhost";
 		$basededatos = "dias_free_mkt";
 
