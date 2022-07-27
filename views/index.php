@@ -1,5 +1,7 @@
 <?php
 include "funciones.php";
+include "api.php";
+include "mail.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $document_type = $_POST['dni'];
   $nro_documento = $_POST['nro_documento'];
@@ -8,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $date_today = date("Y/m/d");
   $canjeado = null;
   
-  include "api.php";
 
     $validar = encontrar_usuario_ss($nro_documento, $email); // 1 o 0
     switch ($validar) {
@@ -45,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                $query_update_cupon .= "fecha_canje='$date_today' \n";
                $query_update_cupon .= "WHERE nro_cupon='$nro_cupon';";
                mysqli_query($conexion, $query_update_cupon);
-
+                enviar_mail($email, $nombres, $nro_cupon);
                 // redirigir al thankyou page
                 header("Location: confirmado.php?email=$email&nombres=$nombres");
                 exit();
