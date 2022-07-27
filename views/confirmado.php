@@ -57,6 +57,7 @@
     <h2>Gracias!</h2>
     <p>"Ya generaste tu cupón de 1 DÍA GRATIS. Te llegará un código al correo registrado.
     Puedes canjearlo en cualquier sede Smart Fit Perú</p>
+    <a href="https://www.smartfit.com.pe/" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Ir Site SmartFit</a>
   </div>
 </body>
 </html>
