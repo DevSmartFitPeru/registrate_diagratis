@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $validar = encontrar_usuario_ss($nro_documento, $email); // 1 o 0
     switch ($validar) {
         case 0:
-            echo "cliente existe";
+            header("Location: respuesta_ss ");
             break;
         case 1:
             echo "cliente no existe";
@@ -82,21 +82,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     ?>
 </head>
 
-<?php 
-$error=sha1(md5("Error"));
-                        if (isset($_GET['error']) && $_GET['error']==$error) {
-                            echo "<script> Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Esta promoción aplica solo para Clientes SmartFit'
-                              });</script>";
-}
-?>
+
 
 <body>
     <div class="container" id="registration-form">
         <div class="image"></div>
         <div class="frm">
+            <?php $mensaje_para_cliente?>
             <h2>Dias Gratis - Day Pass</h2>
             <form action="" method="POST">
                 <div class="form-group">
