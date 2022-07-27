@@ -7,7 +7,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $email = $_POST['email'];
   $date_today = date("Y/m/d");
   $canjeado = null;
- 
+  
+  include "api.php";
+
+    $validar = encontrar_usuario_ss($nro_documento, $email); // 1 o 0
+    
     $conexion = abrirConexion();
 
     // consultar si ya existe el usuario en el sistema
