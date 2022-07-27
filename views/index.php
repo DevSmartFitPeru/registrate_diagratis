@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $user_count = intval($array_count[0]["COUNT(*)"]); // número de usuarios con el dni registrados en la base de datos
 
     
+
     if ($user_count > 0){
         $canjeado = "Este usuario ya tiene un cupón canjeado.";
     }else {
@@ -39,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         mysqli_query($conexion, $query_update_cupon);
 
         // redirigir al thankyou page
-        header("Location: confirmado.php/");
-        exit();   
+        header("Location: confirmado.php?email=$email&nombres=$nombres");
+        exit();
     }
 }
 ?>
@@ -55,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Dias Gratis SmartFit</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <?php
         if($canjeado != null){
             ?> <style>.error{display: block}</style><?php
@@ -66,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="container" id="registration-form">
         <div class="image"></div>
         <div class="frm">
-            <h1>Dias Gratis - Day Pass</h1>
+            <h2>Dias Gratis - Day Pass</h2>
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="username">Tipo Documento:</label>
@@ -95,7 +97,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     <label><input type="checkbox" id="cbox1" value="first_checkbox" required> Autorizo a Smart Fit para el uso de <a href="assets\pdf\Solicitud original.pdf" download>tratamiento de datos</a> y acepto los <a href="assets\pdf\Solicitud original.pdf" download>términos y condiciones</a> del beneficio</label><br>
                 </div>
                 <div class="form-group">
-                    <p class="error"> <?php echo $canjeado ?></p>
+                    <p class=""> <?php 
+                    echo "
+                    <script> Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Este usuario ya tiene un cupón canjeado.'
+                      });</script>";
+                    ?>
+                    </p>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-success btn-lg">Registrar</button>
