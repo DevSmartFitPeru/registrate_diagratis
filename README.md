@@ -1,1 +1,0 @@
-# registrate_diagratis
