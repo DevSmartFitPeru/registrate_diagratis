@@ -5,9 +5,12 @@
 		$servidor = "localhost";
 		$basededatos = "dias_free_mkt";
 
-		$conexion = mysqli_connect( $servidor, $usuario, $contrasena ) or die ("No se ha podido conectar al servidor de BD");
-		$db = mysqli_select_db($conexion, $basededatos) or die ( "No se ha encontrado la base de datos" );
-		echo "conectado";
+		$conexion = new mysqli($servidor, $usuario, $contrasena, $basededatos);
+		// echo "conexion exitosa";
+		if ($conexion->connect_errno) {
+				echo "Fallo al conectar a MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;
+		}
+		// echo $conexion->host_info . "\n";
 		return $conexion;
 	}
 

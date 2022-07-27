@@ -5,45 +5,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $nro_documento = $_POST['nro_documento'];
   $nombres = $_POST['nombres'];
   $email = $_POST['email'];
-
-  if(empty($_POST['nro_documento'])){
-    $document_error = "Por favor, ingrese el documento.";
-  }
-  elseif(empty($_POST['nombres'])){
-    $names_error = "Por favor, ingrese sus nombres completos.";
-  }
-  elseif(empty($_POST['email'])){
-    $email_error = "Por favor, ingrese su email.";
-  }
-
-  if ( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
-      $to = "".$email;
-      $subject = "Confirmación de email";
-      $body = "";
+  $date_today = date("Y/m/d");
+  $canjeado = null;
  
-      $body .= "From: Smartfit". "\r\n";
-      $body .= "Email: "."smartfit@smartfit.com". "\r\n";
-      $body .= "Message: ". "\r\n
-      mail($to, $subject, $body);
-      $message_sent = true;
-  }else {
-    $invalid_class_name = "form-invalid";
- 
-$conexion = abrirConexion();
-// $queries_select_count = "SELECT COUNT(*) FROM `cupones` WHERE (nro_documen= '$nro_documento')";
-// $canjeado = "";
-// if (queries_select_count > 0){
-//   $canjeado = "Este usuario ya tiene un cupón canjeado.";
-// }
-// else {
-//     $date_today = "".date("Y/m/d");
-//     $query_insert_cupon = "insert into cupones(nro_documento, fecha_canjvalues('$nro_documento', '$date_today')";
-//     $query_update_cupon = "update `cupones` set status='canjeado' whenro_documento = '$nro_documento'";
-//     $query_alumno = "insert into alumnos(tipo_documento, nro_documentnombres_completos, email, fecha_creacion) values('$document_type$nro_documento', '$nombres_completos', '$email', '$date_today')";
-//     queries($conexion, $query_insert_cupon);
-//     queries($conexion, $query_update_cupon);
-//     queries($conexion, $query_alumno);
-// }
+    $conexion = abrirConexion();
+
+    // consultar si ya existe el usuario en el sistema
+    $queries_select_count = "SELECT COUNT(*) FROM `alumnos` WHERE (nro_documento= '$nro_documento')";
+    $query = mysqli_query($conexion, $queries_select_count);
+    $array_count = mysqli_fetch_all($query, MYSQLI_ASSOC);
+    $user_count = intval($array_count[0]["COUNT(*)"]); // número de usuarios con el dni registrados en la base de datos
+
+    
+    if ($user_count > 0){
+        $canjeado = "Este usuario ya tiene un cupón canjeado.";
+    }else {
+        // // insertar alumno en la base de datos
+        $query_alumno = "insert into alumnos(tipo_documento, nro_documento, nombres_completos, email, fecha_creacion) values('$document_type','$nro_documento', '$nombres', '$email', '$date_today')";
+        mysqli_query($conexion, $query_alumno);
+
+        // // hacer update del cambio de status para el cupón
+        //  obtener el primer cupón dispionible para hacer el update
+        $get_nro_cupon = "SELECT nro_cupon FROM `códigos_-_free_pass_-_ooh` WHERE nro_documento IS NULL LIMIT 1";
+        $query1 = mysqli_query($conexion, $get_nro_cupon);
+        $array_cupon = mysqli_fetch_all($query1, MYSQLI_ASSOC);
+        $nro_cupon = $array_cupon[0]["nro_cupon"]; // nro de cupon disponible
+        // hacer el update en la tabla de los cupones para el usuario ingresado 
+        $query_update_cupon = "UPDATE `códigos_-_free_pass_-_ooh` \n";
+        $query_update_cupon .= "SET status='canjeado', \n";
+        $query_update_cupon .= "nro_documento='$nro_documento', \n";
+        $query_update_cupon .= "fecha_canje='$date_today' \n";
+        $query_update_cupon .= "WHERE nro_cupon='$nro_cupon';";
+        mysqli_query($conexion, $query_update_cupon);
+
+        // redirigir al thankyou page
+        header("Location: confirmado.php/");
+        exit();   
+    }
 }
 ?>
 
@@ -57,6 +55,11 @@ $conexion = abrirConexion();
     <title>Dias Gratis SmartFit</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php
+        if($canjeado != null){
+            ?> <style>.error{display: block}</style><?php
+        }
+    ?>
 </head>
 
 <body>
@@ -64,7 +67,7 @@ $conexion = abrirConexion();
         <div class="image"></div>
         <div class="frm">
             <h1>Dias Gratis - Day Pass</h1>
-            <form action="confirmado.php" method="POST">
+            <form action="" method="POST">
                 <div class="form-group">
                     <label for="username">Tipo Documento:</label>
                     <select name="dni" class="form-control" id="cars">
@@ -90,6 +93,9 @@ $conexion = abrirConexion();
                 </div>
                 <div class="form-group">
                     <label><input type="checkbox" id="cbox1" value="first_checkbox" required> Autorizo a Smart Fit para el uso de <a href="assets\pdf\Solicitud original.pdf" download>tratamiento de datos</a> y acepto los <a href="assets\pdf\Solicitud original.pdf" download>términos y condiciones</a> del beneficio</label><br>
+                </div>
+                <div class="form-group">
+                    <p class="error"> <?php echo $canjeado ?></p>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-success btn-lg">Registrar</button>
