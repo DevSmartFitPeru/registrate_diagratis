@@ -25,17 +25,14 @@ function encontrar_usuario_ss($dni, $email){
   curl_close($curl);
   // echo $response;
   
-  $registrado = '{"auth_token":"AWnIi0zFVQg83iJ7hn"}';
-  $no_registrado = '{"errors":"invalid_login"}'; // necesitamos esto, porque no está registrado
+  // $registrado = '{"auth_token":"AWnIi0zFVQg83iJ7hn"}';
+  // $no_registrado = '{"errors":"invalid_login"}'; // necesitamos esto, porque no está registrado
 
-  $pattern = "/errors/i";
+  $pattern = "/invalid/i";
 
-  // echo preg_match($pattern, $registrado);
-  echo preg_match($pattern, $no_registrado);
+  // echo preg_match($pattern, $response);
   // necesitamos de respuesta un uno
+  return preg_match($pattern, $response); // devuelve un entero
 }
-encontrar_usuario_ss("74138743", "fabioleofc@gmail.com");
-?>
-<?php
-
+// encontrar_usuario_ss("7413w8743", "fabioleofc@gmail.com");
 ?>
