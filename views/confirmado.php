@@ -43,9 +43,10 @@ header('Content-Type: text/html; charset=UTF-8');
   
       //Content
       $mail->isHTML(true);                                  //Set email format to HTML
+      $mail->CharSet = "utf-8";
       $mail->Subject = 'CODIGO DE CUPON ASIGNADO | '.$nro_cupon;
       $mail->Body    = 'Hola,'.$nombres.' se adjunta tu cupón de PassDay y puedes canjearlo en cualquier unidad de la red SmartFit Perú. Nro Cupon: '.$nro_cupon;
-      // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+      //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
   
       $mail->send();
       echo 'El mensaje fue enviado';
