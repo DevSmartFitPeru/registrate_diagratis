@@ -20,9 +20,10 @@ header('Content-Type: text/html; charset=UTF-8');
   
   try {
       //Server settings
-      $mail->SMTPDebug = 0;                      //Enable verbose debug output
+      
       $mail->isSMTP();                                            //Send using SMTP
       $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+      $mail->SMTPDebug = 2;                      //Enable verbose debug output
       $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
       $mail->Username   = 'noreply.pe@smartfit.com';                     //SMTP username
       $mail->Password   = 'Soporte123@';                               //SMTP password
