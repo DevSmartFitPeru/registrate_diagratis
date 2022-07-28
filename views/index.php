@@ -4,7 +4,7 @@ error_reporting(0);
 
 include "funciones.php";
 include "api.php";
-include "mail.php";
+//include "mail.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $document_type = $_POST['dni'];
   $nro_documento = $_POST['nro_documento'];
@@ -31,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
             if ($user_count > 0){
-                $canjeado = "Este usuario ya tiene un cupón canjeado.";
+                //$canjeado = "Este usuario ya tiene un cupón canjeado.";
+                header("Location: existencia.php");
             }else {
                 // // insertar alumno en la base de datos
                 $query_alumno = "insert into alumnos(tipo_documento, nro_documento, nombres_completos, email, fecha_creacion) values('$document_type','$nro_documento', '$nombres', '$email', '$date_today')";
@@ -41,20 +42,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
                // // hacer update del cambio de status para el cupón
                //  obtener el primer cupón dispionible para hacer el update
-               $get_nro_cupon = "SELECT nro_cupon FROM `códigos_-_free_pass_-_ooh` WHERE nro_documento IS NULL LIMIT 1";
+               $get_nro_cupon = "SELECT nro_cupon FROM `cupones` WHERE nro_documento IS NOT NULL LIMIT 1";
                $query1 = mysqli_query($conexion, $get_nro_cupon);
                $array_cupon = mysqli_fetch_all($query1, MYSQLI_ASSOC);
                $nro_cupon = $array_cupon[0]["nro_cupon"]; // nro de cupon disponible
                // hacer el update en la tabla de los cupones para el usuario ingresado 
-               $query_update_cupon = "UPDATE `códigos_-_free_pass_-_ooh` \n";
+               $query_update_cupon = "UPDATE `cupones` \n";
                $query_update_cupon .= "SET status='canjeado', \n";
                $query_update_cupon .= "nro_documento='$nro_documento', \n";
                $query_update_cupon .= "fecha_canje='$date_today' \n";
                $query_update_cupon .= "WHERE nro_cupon='$nro_cupon';";
                mysqli_query($conexion, $query_update_cupon);
-                enviar_mail($email, $nombres, $nro_cupon);
+                //enviar_mail($email, $nombres, $nro_cupon);
                 // redirigir al thankyou page
-                header("Location: confirmado.php?email=$email&nombres=$nombres");
+                header("Location: confirmado.php?email=$email&nombres=$nombres&cuponera=$nro_cupon");
                 exit();
             }
             break;

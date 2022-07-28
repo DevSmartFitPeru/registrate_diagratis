@@ -6,6 +6,7 @@
 		$basededatos = "dias_free_mkt";
 
 		$conexion = new mysqli($servidor, $usuario, $contrasena, $basededatos);
+		mysqli_query("SET NAMES 'utf8'",$conexion);//UFT para las tildes
 		// echo "conexion exitosa";
 		if ($conexion->connect_errno) {
 				echo "Fallo al conectar a MySQL: (" . $conexion->connect_errno . ") " . $conexion->connect_error;

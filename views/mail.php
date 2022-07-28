@@ -13,8 +13,8 @@ function enviar_mail($correo, $nombres, $nro_cupon){
   
   try {
       //Server settings
-      $mail->SMTPDebug = 0;                      //Enable verbose debug output
-      $mail->isSMTP();                                            //Send using SMTP
+      $mail->SMTPDebug = 0;                                     //Enable verbose debug output
+      $mail->isSMTP();                                          //Send using SMTP
       $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
       $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
       $mail->Username   = 'noreply.pe@smartfit.com';                     //SMTP username

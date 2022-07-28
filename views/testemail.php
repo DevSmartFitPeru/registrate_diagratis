@@ -1,16 +1,9 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8'); 
+  use PHPMailer\PHPMailer\PHPMailer;
+  use PHPMailer\PHPMailer\Exception;
+function enviar_mail($correo, $nombres, $nro_cupon){
 
- use PHPMailer\PHPMailer\PHPMailer;
- use PHPMailer\PHPMailer\Exception;
-
-
-  $correo_usuario = $_GET['email'];
-  //echo $correo_usuario;
-  $nombres = $_GET['nombres'];
-  $nro_cupon = $_GET['cuponera'];
-  //echo $nombres;
-
+  
   require '../Phpmailer/Exception.php';
   require '../Phpmailer/PHPMailer.php';
   require '../Phpmailer/SMTP.php';
@@ -31,7 +24,7 @@ header('Content-Type: text/html; charset=UTF-8');
   
       //Recipients
       $mail->setFrom('noreply.pe@smartfit.com', 'No reply');
-      $mail->addAddress($correo_usuario, $nombres);     //Add a recipient
+      $mail->addAddress($correo, $nombres);     //Add a recipient
       // $mail->addAddress('ellen@example.com');               //Name is optional
       // $mail->addReplyTo('info@example.com', 'Information');
       // $mail->addCC('cc@example.com');
@@ -44,34 +37,12 @@ header('Content-Type: text/html; charset=UTF-8');
       //Content
       $mail->isHTML(true);                                  //Set email format to HTML
       $mail->Subject = 'Codigo de Cupón | '.$nro_cupon;
-      $mail->Body    = 'Hola,'.$nombres.' se adjunta tu cupon de PassDay y puedes canjearlo en cualquier unidad de la red SmartFit Perú. Cupon Asignado: '.$nro_cupon;
+      $mail->Body    = 'Hola, se adjunta tu cupon de PassDay y puedes canjearlo en cualquier unidad de la red SmartFit Perú. Cupon Asignado: '.$nro_cupon;
       // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
   
       $mail->send();
-      echo 'El mensaje fue enviado';
+      //echo 'El mensaje fue enviado';
   } catch (Exception $e) {
-      echo "El mensaje no se pudo enviar. Error: {$mail->ErrorInfo}";
+      //echo "El mensaje no se pudo enviar. Error: {$mail->ErrorInfo}";
   }
-
-
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="https://www.smartfit.com.pe/packs/media/apple-icon-57x57-2947bd46.png">
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <title>Confirmado</title>
-</head>
-<body>
-  <div class="popup">
-    <img src="404-tick.png">
-    <h2>Cupon enviado con Exito!</h2>
-    <p>"Ya generaste tu cupón de 1 DÍA GRATIS. Te llegará un código al correo <?php echo $correo_usuario?> registrado.
-    Puedes canjearlo en cualquier sede Smart Fit Perú</p>
-    <a href="https://www.smartfit.com.pe/" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Ir Site SmartFit</a>
-  </div>
-</body>
-</html>
+}
