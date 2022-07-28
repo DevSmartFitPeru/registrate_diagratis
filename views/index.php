@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $validar = encontrar_usuario_ss($nro_documento, $email); // 1 o 0
     switch ($validar) {
         case 0:
-            header("Location: respuesta_ss ");
+            header("Location: respuesta_ss.php?dni=$nro_documento&nombres=$nombres ");
             break;
         case 1:
-            echo "cliente no existe";
+           // echo "cliente no existe";
 
             $conexion = abrirConexion();
             // consultar si ya existe el usuario en el sistema
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
             if ($user_count > 0){
                 //$canjeado = "Este usuario ya tiene un cupón canjeado.";
-                header("Location: existencia.php");
+                header("Location: existencia.php?dni=$nro_documento&nombres=$nombres");
             }else {
                 // // insertar alumno en la base de datos
                 $query_alumno = "insert into alumnos(tipo_documento, nro_documento, nombres_completos, email, fecha_creacion) values('$document_type','$nro_documento', '$nombres', '$email', '$date_today')";
@@ -90,43 +90,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="image"></div>
         <div class="frm">
             <?php $mensaje_para_cliente?>
-            <h2>Dias Gratis - Day Pass</h2>
+            <h4><b>Día Gratis - Smart Fit</b></h4>
             <form action="" method="POST">
                 <div class="form-group">
-                    <label for="username">Tipo Documento:</label>
-                    <select name="dni" class="form-control" id="cars">
+                    <label for="username">*Tipo Documento:</label>
+                    <select name="dni" class="form-control"  required>
+                        <option value="">Seleccione tipo Documento</option>
                         <option value="DNI">DNI</option>
                         <option value="Pasaporte">Pasaporte</option>
                         <option value="Carnet de Extrangeria">Carnet de Extranjeria</option>
                       </select>
                 </div>
                 <div class="form-group">
-                    <label for="email">Nro. Documento:</label>
-                    <input type="text" class="form-control" name="nro_documento" id="nro_documento" placeholder="Ingrese NRO. Documento" required>
+                    <label for="email">*Nro. Documento:</label>
+                    <input type="text" class="form-control" name="nro_documento" id="nro_documento" placeholder="Ingrese Nro. Documento" required>
                     <span><?php if(isset($document_error)) $document_error ?></span>
                 </div>
                 <div class="form-group">
-                    <label for="email">Nombres y Apellidos:</label>
-                    <input type="nombres_apellidos" class="form-control" name="nombres" id="nombres" placeholder="Ingrese nombes y apellidos completos" required>
+                    <label for="email">*Nombres y Apellidos:</label>
+                    <input type="nombres_apellidos" class="form-control" name="nombres" id="nombres" placeholder="Nombres y apellidos completos" required>
                     <span><?php if(isset($names_error)) $names_error ?></span>
                 </div>
                 <div class="form-group">
-                    <label for="pwd">Email:</label>
+                    <label for="pwd">*Email:</label>
                     <input type="email" class="form-control" name="email" id="pwd" placeholder="Ingrese email" required>
                     <span><?php if(isset($email_error)) $email_error ?></span>
                 </div>
                 <div class="form-group">
-                    <label><input type="checkbox" id="cbox1" value="first_checkbox" required> Autorizo a Smart Fit para el uso de <a href="assets\pdf\Solicitud original.pdf" download>tratamiento de datos</a> y acepto los <a href="assets\pdf\Solicitud original.pdf" download>términos y condiciones</a> del beneficio</label><br>
+                    <label>* <input type="checkbox" id="cbox1" value="first_checkbox" required> Autorizo a Smart Fit para el uso de <a href="assets\pdf\Solicitud original.pdf" download>tratamiento de datos</a> y acepto los <a href="assets\pdf\Solicitud original.pdf" download>términos y condiciones</a> del beneficio</label><br>
+                    <small>Esta promoción es valida para NO clientes</small>
                 </div>
+
                 <div class="form-group">
-                    <p class=""> <?php 
-                    echo "
-                    ";
-                    ?>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg">Registrar</button>
+                    <button type="submit" class="btn btn-danger btn-lg">Registrar</button>
+                    
                 </div>
             </form>
         </div>

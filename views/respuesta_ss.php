@@ -1,3 +1,9 @@
+<?php
+
+$nro_dni = $_GET['dni'];
+$nombres = $_GET['nombres'];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +17,8 @@
 <body>
   <div class="popup">
     <img src="404-tick.png">
-    <h2>Hola!</h2>
-    <p>"Esta promoción es valida solo para NO Clientes SmartFit, idenficamos que ya eres cliente."</p>
+    <h3>Hola! <?php echo $nombres?></h3>
+    <p>"Vericamos que ya eres clientes de Smart Fit. Esta promoción es valida solo para NO Clientes."</p>
     <a href="https://www.smartfit.com.pe/" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Ir Site SmartFit</a>
   </div>
 </body>

@@ -1,5 +1,5 @@
 html{
-    background: url("background.jpg") no-repeat;
+    background: url("../public/imagenes/fondo_site.jpg") no-repeat;
 	background-size: cover;
     min-height: 100%;
 }
