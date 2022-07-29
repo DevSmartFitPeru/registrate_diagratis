@@ -1,4 +1,5 @@
 <?php
+
     //ENVIO DE CORREO
     require('../public/phpmailer/src/PHPMailer.php');
     require('../public/phpmailer/src/SMTP.php');
@@ -34,7 +35,7 @@ $mail->CharSet = "utf-8";
 // Set email format to HTML
 $mail->Subject = '[ZORE COURIER SOFTWARE] - CODIGO REMITO:';
 $mail->Body    = 'Hola <b>Luis:</b><br>Te enviamos la constancia de envio via SmartClinica, ten la seguridad que tu envio sera entregado en excelentes condiciones.<br> Muchas Gracias por la confianza!!!<br>Atte.<br>Equipo de Ventas SoreCourier';
-$mail->AltBody = 'Hola Luis: Te enviamos la constancia de envio vía Courier en SmartClinica, ten la seguridad que tu envio sera entregado en excelentes condiciones.. Muchas Gracias por la confianza!!!.<br>Atte.<br>Equipo de Ventas SoreCourier'; // Si no tienen habilitado el correo HTML
+//$mail->AltBody = 'Hola Luis: Te enviamos la constancia de envio vía Courier en SmartClinica, ten la seguridad que tu envio sera entregado en excelentes condiciones.. Muchas Gracias por la confianza!!!.<br>Atte.<br>Equipo de Ventas SoreCourier'; // Si no tienen habilitado el correo HTML
 
 //Enviamos el correo
 $mail->send();
