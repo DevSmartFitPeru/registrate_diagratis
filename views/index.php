@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
                // // hacer update del cambio de status para el cupón
                //  obtener el primer cupón dispionible para hacer el update
-               $get_nro_cupon = "SELECT nro_cupon FROM `cupones` WHERE nro_documento IS NOT NULL LIMIT 1";
+               $get_nro_cupon = "SELECT DISTINCT nro_cupon FROM `cupones` WHERE status='pendiente' LIMIT 1;";
                $query1 = mysqli_query($conexion, $get_nro_cupon);
                $array_cupon = mysqli_fetch_all($query1, MYSQLI_ASSOC);
                $nro_cupon = $array_cupon[0]["nro_cupon"]; // nro de cupon disponible
